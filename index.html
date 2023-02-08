@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Work Time Calculator</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Work Time Calculator</h1>
+  <form id="form">
+    <label for="input">Enter your work times:</label>
+    <input type="text" id="input" onkeydown="if (event.keyCode == 13) { calculateWorkTime(); event.preventDefault(); }">
+    <br><br>
+    <button type="button" id="sub" onclick="calculateWorkTime()">Calculate</button>
+  </form>
+
+  <h3><div id="result"></div></h3>
+  <div id="saved-times">
+    <h3>Saved Work Times:</h3>
+
+    <button id="clear-button" onclick="clearWorkTimes()">Clear All</button>
+
+    <ul id="saved-list">
+    </ul>
+  </div>
+  
+  <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
