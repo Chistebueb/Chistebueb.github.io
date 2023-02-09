@@ -9,10 +9,37 @@ function calculateWorkTime() {
     let input = document.getElementById("input").value;
     let timeStrings = input.split("/");
     let workTime = 0;
+    var red = false;
+
+
+    //checking for errors, before the calculation starts
+    if(timeStrings[0].length < 8 || timeStrings[1].length < 8)
+    {
+        document.getElementById("result").style.color = "red";
+        document.getElementById("result").innerHTML = "ERROR: wrong format!";
+        return;
+    }
+
+
     for (let i = 0; i < timeStrings.length; i++) {
       let time = timeStrings[i].split("-");
       let start = time[0];
       let end = time[1];
+
+
+        //check for errors
+        if(red || start.length !== 4 || (end.replace('[','')).length !== 4)
+        {
+            document.getElementById("result").style.color = "red";
+            document.getElementById("result").innerHTML = "ERROR: wrong format!";
+            return;
+        }
+        else
+        {
+            document.getElementById("result").style.color = "#fff";
+        }
+
+
       let breakIndex = end.indexOf("[");
       let breakTime = 0;
       if (breakIndex !== -1) {
@@ -20,6 +47,12 @@ function calculateWorkTime() {
         if(breakstring.includes("["))
         {
             breakstring = time[2].replace(']','');
+        }
+        else
+        {
+            document.getElementById("result").style.color = "red";
+            document.getElementById("result").innerHTML = "ERROR: wrong format!";
+            return;
         }
 
         breakTime = parseInt(breakstring);
@@ -34,6 +67,30 @@ function calculateWorkTime() {
     }
     let hours = Math.floor(workTime / 60);
     let minutes = workTime % 60;
+
+    //check for errors again
+    if(workTime==NaN)
+    {
+        document.getElementById("result").style.color = "red";
+        document.getElementById("result").innerHTML = "ERROR: unidentifiable character!";
+        return;
+    }
+
+    if(workTime < 0)
+    {
+        document.getElementById("result").style.color = "red";
+        document.getElementById("result").innerHTML = "ERROR: impossible Time!";
+        return;
+    }
+
+    if(hours < 6 || hours > 10)
+    {
+        document.getElementById("result").style.color = "red";
+        document.getElementById("result").innerHTML = "Unlikely time:" + hours + " hours and " + minutes + " minutes";
+        saveWorkTime();
+        return;
+    }
+
     document.getElementById("result").innerHTML = "Total work time: " + hours + " hours and " + minutes + " minutes";
     saveWorkTime();
 }
@@ -91,6 +148,10 @@ function insertIntoInput(event) {
         newItem.appendChild(newButton);
         list.insertBefore(newItem, list.firstChild);
       }
+    }
+    if(list.getElementsByTagName("li").length > 9)
+    {
+        list.removeChild(list.getElementsByTagName("li")[8]);
     }
     localStorage.setItem("savedWorkTimes", JSON.stringify(uniqueWorkTimes));
   }
