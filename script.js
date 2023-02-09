@@ -164,3 +164,4 @@ function insertIntoInput(event) {
       list.removeChild(list.firstChild);
     }
   }
+  
